@@ -43,14 +43,20 @@ type ('nonterminal, 'terminal) symbol =
     | N of 'nonterminal
     | T of 'terminal
 
-let is_terminal symbol = 
+(*let is_terminal symbol = 
     match symbol with 
     | T _ -> true
     | N _ -> false  
-    
-let filter_blind_alleys g = 
 
+let rec is_terminal_rule rule =
+    match rule with 
+    | [] -> true
+    | x::xs -> 
+        if is_terminal x then
+            is_terminal_rule xs
+        else 
+            false
 
-
-    
-
+let rec filter_blind_alleys g = 
+    let (start, rules) = g in
+    let result = [] in *)
