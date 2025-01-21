@@ -20,8 +20,37 @@ let rec set_all_union a =
     | x::xs -> set_union x (set_all_union xs)
     
 let rec computed_fixed_point eq f x = 
-    let test = f x in  (* Call f first to get the new value *)
+    let test = f x in 
     if eq test x then x 
     else computed_fixed_point eq f test
 
-(* test changes *)
+(* helper function that applys function f, p times*)
+let rec apply_p f p x = 
+    if p = 1 then (f x)
+    else apply_p f (p-1) (f x)
+
+let rec computed_periodic_point eq f p x = 
+    if p = 0 then x
+    else if p = 1 then (f x)
+    else if (eq (apply_p f p x) x ) then x 
+    else computed_periodic_point eq f p (f x)
+
+let rec whileseq s p x = 
+    if not (p x) then []
+    else x::whileseq s p (s x)
+
+type ('nonterminal, 'terminal) symbol = 
+    | N of 'nonterminal
+    | T of 'terminal
+
+let is_terminal symbol = 
+    match symbol with 
+    | T _ -> true
+    | N _ -> false  
+    
+let filter_blind_alleys g = 
+
+
+
+    
+
