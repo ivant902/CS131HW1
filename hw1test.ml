@@ -1,5 +1,3 @@
-open HW1
-
 let subset_test0 = subset [] [1;2;3]
 Printf.printf "subset_test0: %b\n" subset_test0;
 
