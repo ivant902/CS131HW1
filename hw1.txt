@@ -1,0 +1,1 @@
+Tasks 1-5, 7, and 8 were completed using basic library functions, matching, and basic recursion. The main ideas used in writing these functions were to write the base case and then write the general case where some work would be done but then the function would recursively call itself until the base case was reached, doing some work each time. 
