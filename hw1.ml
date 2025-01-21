@@ -23,3 +23,5 @@ let rec computed_fixed_point eq f x =
     let test = f x in  (* Call f first to get the new value *)
     if eq test x then x 
     else computed_fixed_point eq f test
+
+(* test changes *)
