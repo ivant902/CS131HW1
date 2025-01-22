@@ -43,11 +43,14 @@ type ('nonterminal, 'terminal) symbol =
     | N of 'nonterminal
     | T of 'terminal
 
+(* this checks if a single symbol is terminal*)
 let is_terminal symbol = 
     match symbol with 
     | T _ -> true
     | N _ -> false  
-(* rules that enter this are only the rhs of a rule*)
+(* rules that enter this are only the rhs of a rule
+this checks if the entire rule is terminal
+*)
 let rec is_terminal_rule rule =  
     match rule with
     | [] -> true
@@ -55,6 +58,7 @@ let rec is_terminal_rule rule =
         if is_terminal x 
         then is_terminal_rule xs
         else false
+(* this isolates all the immediate terminal rules*)
 let rec create_terminal_rule_list rules = 
     match rules with 
     | [] -> []
@@ -63,7 +67,7 @@ let rec create_terminal_rule_list rules =
             x::create_terminal_rule_list xs
         else 
             create_terminal_rule_list xs
-
+(* this isolates all rules with at least one nonterminal*)
 let rec create_nonterminal_rule_list rules = 
     match rules with 
     | [] -> []
@@ -72,7 +76,7 @@ let rec create_nonterminal_rule_list rules =
             x::create_nonterminal_rule_list xs
         else 
             create_nonterminal_rule_list xs
-
+(* this checks if a rule can be resolved to a terminal rule*)
 let rec is_fully_terminal n_rules t_rules =
     match n_rules with
     | [] -> t_rules
@@ -88,19 +92,13 @@ let rec is_fully_terminal n_rules t_rules =
             is_fully_terminal rest (rule::t_rules)
         else
             is_fully_terminal rest t_rules
-
-let rec fixed_point_terminal n_rules t_rules =
-    let new_t_rules = is_fully_terminal n_rules t_rules in
-    if List.length new_t_rules <= List.length t_rules
-    then t_rules
-    else fixed_point_terminal n_rules new_t_rules
-
-let order_rules fully_terminal_rules rules = List.filter (fun rule ->
-        List.mem rule fully_terminal_rules) rules
+(*This orders the rules according to the original list of rules*)
+let order_rules fully_terminal_rules rules = 
+    List.filter (fun rule -> List.mem rule fully_terminal_rules) rules
 
 let filter_blind_alleys g = 
     let (start, rules) = g in
     let t_rules = create_terminal_rule_list rules in
     let n_rules = create_nonterminal_rule_list rules in
     let fully_terminal_rules = is_fully_terminal n_rules t_rules in
-    (start, order_rules fully_terminal_rules rules)
+    (start, (order_rules fully_terminal_rules rules))

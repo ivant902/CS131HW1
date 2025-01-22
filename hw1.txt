@@ -1,1 +1,32 @@
 Tasks 1-5, 7, and 8 were completed using basic library functions, matching, and basic recursion. The main ideas used in writing these functions were to write the base case and then write the general case where some work would be done but then the function would recursively call itself until the base case was reached, doing some work each time. 
+For the blind alley function, the idea was to first 
+create a list of terminal rules, then a list of rules 
+with at least one nonterminal. Then using recursion, I would 
+chcek each nonterminal rule to see if it could be resolved 
+by one of the rules in the terminal rule list. If it could and
+all other nonterminals could be resolved in that rule, then
+it would be added to the list of fully terminal rules. After 
+adding any rule to the list of fully terminal rules, I would 
+recursively call the function again in order to check all
+nonterminals against the new set of terminal rules. If the 
+function goes through the entire list of nonterminal rules
+without adding any rules to the fully terminal rules list,
+then the function would return the list of fully terminal rules.
+
+This list was completed unsorted, so I used the original list 
+of rules and recursively compared the original list against
+the new list. If an item existed in the original list and
+the new list, I would add it to the new list. If it did not, 
+then the function would continue to the next item in the 
+original list. This would continue until the original list completed. 
+As a result, this returned an ordered list of rules that would
+lead to all terminal solutions. 
+
+In writing my own test cases, I used similar ideas to the sample
+cases. For all functions except the blind alley function, it was
+straightforward. I changed the sets being compared. For the
+blind alley function test cases, I removed the binop rules from the
+initial argument which would return the same list as the original
+except the rule with expr as the left hand side and the binop on
+the right hand side would be removed in the filter since binop would
+never resolve to be terminal. 
