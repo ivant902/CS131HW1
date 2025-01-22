@@ -43,20 +43,59 @@ type ('nonterminal, 'terminal) symbol =
     | N of 'nonterminal
     | T of 'terminal
 
-(*let is_terminal symbol = 
+let is_terminal symbol = 
     match symbol with 
     | T _ -> true
     | N _ -> false  
-
-let rec is_terminal_rule rule =
-    match rule with 
+(* rules that enter this are only the rhs of a rule*)
+let rec is_terminal_rule rule =  
+    match rule with
     | [] -> true
     | x::xs -> 
-        if is_terminal x then
-            is_terminal_rule xs
+        if is_terminal x 
+        then is_terminal_rule xs
+        else false
+let rec create_terminal_rule_list rules = 
+    match rules with 
+    | [] -> []
+    | x::xs -> 
+        if is_terminal_rule (snd x) then 
+            x::create_terminal_rule_list xs
         else 
-            false
+            create_terminal_rule_list xs
 
-let rec filter_blind_alleys g = 
+let rec create_nonterminal_rule_list rules = 
+    match rules with 
+    | [] -> []
+    | x::xs -> 
+        if not (is_terminal_rule (snd x)) then 
+            x::create_nonterminal_rule_list xs
+        else 
+            create_nonterminal_rule_list xs
+
+let rec is_fully_terminal n_rules t_rules =
+    match n_rules with
+    | [] -> t_rules
+    | rule::rest ->
+        let lhs, rhs = rule in
+        let can_resolve = List.for_all (fun symbol ->
+            match symbol with
+            | T _ -> true
+            | N nonterminal -> 
+                List.exists (fun (t_lhs, _) -> t_lhs = nonterminal) t_rules
+        ) rhs in
+        if can_resolve then
+            is_fully_terminal rest (rule::t_rules)
+        else
+            is_fully_terminal rest t_rules
+
+        
+let filter_blind_alleys g = 
     let (start, rules) = g in
-    let result = [] in *)
+    let t_rules = create_terminal_rule_list rules in
+    let n_rules = create_nonterminal_rule_list rules in
+    let fully_terminal_rules = is_fully_terminal n_rules t_rules in
+    let ordered_rules = List.filter (fun rule ->
+        List.mem rule fully_terminal_rules
+    ) rules in
+    (start, ordered_rules)
