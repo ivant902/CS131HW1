@@ -80,12 +80,16 @@ let awksub_rules =
 
 let awksub_grammar = Expr, awksub_rules
 
-(*let test1 = is_terminal_rule [T"0"]
-let test2 = create_terminal_rule_list awksub_rules
-let test3 = create_nonterminal_rule_list awksub_rules
-let test4 = is_fully_terminal test2 test3*)
+let test1 = is_terminal_rule [T"0"]
+let test2 = create_terminal_rule_list (snd awksub_grammar)
+let test3 = create_nonterminal_rule_list (snd awksub_grammar)
+let test4 = is_fully_terminal test2 test3
+let test5 = order_rules test4 (snd awksub_grammar)
+let test6 = (fst awksub_grammar, test5)
 let awksub_test0 =
-  filter_blind_alleys awksub_grammar = awksub_grammar
+filter_blind_alleys awksub_grammar = test6
+
+
 
 let awksub_test1 =
   filter_blind_alleys (Expr, List.tl awksub_rules) = (Expr, List.tl awksub_rules)

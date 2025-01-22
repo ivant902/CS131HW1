@@ -89,13 +89,18 @@ let rec is_fully_terminal n_rules t_rules =
         else
             is_fully_terminal rest t_rules
 
-        
+let rec fixed_point_terminal n_rules t_rules =
+    let new_t_rules = is_fully_terminal n_rules t_rules in
+    if List.length new_t_rules <= List.length t_rules
+    then t_rules
+    else fixed_point_terminal n_rules new_t_rules
+
+let order_rules fully_terminal_rules rules = List.filter (fun rule ->
+        List.mem rule fully_terminal_rules) rules
+
 let filter_blind_alleys g = 
     let (start, rules) = g in
     let t_rules = create_terminal_rule_list rules in
     let n_rules = create_nonterminal_rule_list rules in
     let fully_terminal_rules = is_fully_terminal n_rules t_rules in
-    let ordered_rules = List.filter (fun rule ->
-        List.mem rule fully_terminal_rules
-    ) rules in
-    (start, ordered_rules)
+    (start, order_rules fully_terminal_rules rules)
