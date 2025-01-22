@@ -1,3 +1,11 @@
+Answer to Russell's Paradox:
+The reason why Russell's Paradox can not be written as a function
+is because inherently, a function can not have members of the same 
+type as the function itself. If a set was a member of itself, it would 
+return a contradiction. For example, if we had a set of integers, 
+then the set would not be a member of itself as the set's type
+is a list of integers whilst the type of the members are integers.
+
 Tasks 1-5, 7, and 8 were completed using basic library functions, 
 matching, and basic recursion. The main ideas used in writing
 these functions were to write the base case and then write 

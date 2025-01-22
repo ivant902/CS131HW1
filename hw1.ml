@@ -102,3 +102,14 @@ let filter_blind_alleys g =
     let n_rules = create_nonterminal_rule_list rules in
     let fully_terminal_rules = is_fully_terminal n_rules t_rules in
     (start, (order_rules fully_terminal_rules rules))
+
+
+(*
+Answer to Russell's Paradox:
+The reason why Russell's Paradox can not be written as a function
+is because inherently, a function can not have members of the same 
+type as the function itself. If a set was a member of itself, it would 
+return a contradiction. For example, if we had a set of integers, 
+then the set would not be a member of itself as the set's type
+is a list of integers whilst the type of the members are integers.
+*)
